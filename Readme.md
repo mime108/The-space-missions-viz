@@ -13,8 +13,6 @@ This interactive website takes you on a guided tour through humanity’s space e
 
 ## Tech Stack
 - **Frontend**: HTML5, CSS3 (responsive design)
-- **Visualizations**: JavaScript with [Chart.js for pie chart, D3.js/Leaflet for timeline/path – specify your libraries]
-- **Data**: [e.g., NASA Voyager data, UCS Satellite Database, ESA debris stats – specify sources]
+- **Visualizations**: JavaScript with [Chart.js for pie chart, D3.js/Leaflet for timeline/path]
+- **Data**: [e.g., NASA Voyager data, UCS Satellite Database, ESA debris stats]
 - **Hosting**: GitHub Pages
-
-## Project Structure
