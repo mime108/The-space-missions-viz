@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>History of Space Missions | An Interactive Journey</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-dark: #0a0a14;
+      --secondary-dark: #141421;
+      --accent-blue: #4169e1;
+      --accent-cyan: #00ffff;
+      --accent-purple: #9370DB;
+      --accent-pink: #ff5e9b;
+      --text-light: #f1f1f1;
+      --text-accent: #e0e0ff;
+    }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    
+    body { 
+      font-family: 'Exo 2', sans-serif; 
+      background: var(--primary-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 { 
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    h1 {
+      font-size: clamp(3rem, 6vw, 6rem);
+      margin-bottom: 1.5rem;
+      background: linear-gradient(120deg, var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(65, 105, 225, 0.4);
+    }
+    
+    h2 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+    
+    h3 {
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: clamp(1.1rem, 1.7vw, 1.3rem);
+      margin-bottom: 1.5rem;
+      max-width: 900px;
+    }
+    
+    em, strong {
+      color: var(--accent-cyan);
+    }
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section, header {
+      position: relative;
+      padding: 8rem 0;
+    }
+
+    .section-inner {
+      position: relative;
+      z-index: 2;
+    }
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80') center/cover no-repeat;
+      z-index: -1;
+      filter: brightness(0.4);
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(10, 10, 20, 0.6) 0%, var(--primary-dark) 100%);
+      z-index: 0;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      color: var(--accent-cyan);
+      animation: float 2s ease-in-out infinite;
+      z-index: 5;
+      cursor: pointer;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(-50%); }
+      50% { transform: translateY(-20px) translateX(-50%); }
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 2rem;
+      z-index: 100;
+      transition: background 0.3s ease, padding 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+      background: rgba(10, 10, 20, 0.95);
+      padding: 0.8rem 2rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo i {
+      margin-right: 0.5rem;
+      color: var(--accent-cyan);
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: var(--accent-cyan);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    .content-section {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .section-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.1;
+      background-attachment: fixed;
+    }
+    
+    .section-title {
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 100px;
+      height: 4px;
+      background: var(--accent-cyan);
+    }
+    
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    
+    .highlight-box {
+      background: rgba(65, 105, 225, 0.1);
+      border-left: 3px solid var(--accent-blue);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .highlight-box p {
+      margin-bottom: 0;
+    }
+    .viz-wrapper {
+      position: relative;
+      margin: 5rem auto;
+      max-width: 1400px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: rgba(20, 20, 33, 0.7);
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(65, 105, 225, 0.3);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .viz-wrapper:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 60px rgba(0, 255, 255, 0.25);
+    }
+    
+    .viz-header {
+      background: linear-gradient(90deg, var(--secondary-dark), #1a1a3d);
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(65, 105, 225, 0.3);
+    }
+    
+    .viz-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.5rem;
+      margin: 0;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .viz-content {
+      position: relative;
+      height: 85vh;
+      background: rgba(10, 10, 20, 0.4);
+    }
+    
+    .viz-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .viz-info {
+      background: linear-gradient(90deg, #1a1a3d, var(--secondary-dark));
+      padding: 1.5rem 2rem;
+      border-top: 1px solid rgba(65, 105, 225, 0.3);
+    }
+    
+    .viz-insight {
+      font-size: 1rem;
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    .viz-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 20, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(65, 105, 225, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid var(--accent-cyan);
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .insight-box {
+      background: rgba(65, 105, 225, 0.1);
+      border-radius: 10px;
+      margin: 1rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(147, 112, 219, 0.3);
+    }
+    
+    .insight-title {
+      color: var(--accent-purple);
+      font-size: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: twinkle 5s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+    .orbit {
+      position: absolute;
+      border: 1px dashed rgba(65, 105, 225, 0.3);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    
+    .planet {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+    .cta {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+      color: var(--text-light);
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    
+    .cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(65, 105, 225, 0.3);
+    }
+    footer {
+      background: var(--secondary-dark);
+      padding: 4rem 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+    }
+    
+    .footer-col h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .footer-col ul {
+      list-style: none;
+    }
+    
+    .footer-col ul li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-col a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-col a:hover {
+      color: var(--accent-cyan);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(65, 105, 225, 0.2);
+      color: var(--text-light);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: var(--accent-blue);
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    @media (max-width: 992px) {
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        background: rgba(10, 10, 20, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .close-menu {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+      
+      section, header {
+        padding: 4rem 0;
+      }
+      
+      .viz-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+      
+      section, header {
+        padding: 3rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo"><i class="fas fa-rocket"></i>SPACE MISSIONS</a>
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#voyager">Voyager</a></li>
+        <li><a href="#global">Global Efforts</a></li>
+        <li><a href="#debris">Space Debris</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 data-aos="fade-up" data-aos-duration="1000">The History Of Space Missions</h1>
+      <h2 data-aos="fade-up" data-aos-duration="1000">From Earth to the Stars</h2>
+      <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">Explore humanity's journey beyond the sky through interactive visualizations and meticulously researched content.</p>
+      <a href="#launch-sites" class="cta" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">Begin Your Journey</a>
+    </div>
+    <a href="#launch-sites" class="scroll-indicator"><i class="fas fa-chevron-down"></i></a>
+  </header>
+  <section class="content-section">
+    <div class="container">
+      <div class="section-inner" data-aos="fade-up">
+        <p>
+          Since the mid-20th century, space exploration has been one of humanity's most ambitious and far-reaching endeavors. What began with a modest silver sphere beeping as it orbited Earth has evolved into a rich brocade of scientific exploration, technological innovation, and international cooperation that continues to expand our understanding of the universe and ourselves. We've walked on the Moon, landed rovers on Mars, photographed all the planets in the solar system, and sent ambassadors of humankind into the black unknown of interstellar space.
+        </p>
+        <div class="highlight-box">
+          <p>Our digital exhibition examines the varied purposes behind space endeavors—from scientific discovery and national prestige to 
+          commercial applications and defense capabilities. We also confront the growing challenge of orbital debris, a consequence of our 
+          expanding presence beyond Earth that threatens future exploration.</p>
+        </div>
+        <p>Through fun interactive visualizations and thoroughly vetted materials, our site invites you to experience the thrilling history of spaceflights. Observe the most important events which rewrote the limits of what was possible, encounter the different nations and groups to have achieved membership in spacefaring societies, and study the emerging technology that has produced increasingly ambitious flights a reality. Our virtual exhibition delves into the varied motivations for space activities—from scientific exploration and national honor to profit and defense capability. We also confront the increasingly critical issue of orbital debris, a legacy of our increasing activity beyond Earth that threatens future endeavors.</p>
+      </div>
+    </div>
+  </section>
+  <section class="content-section" id="launch-sites">
+    <div class="orbit" style="top: 20%; left: -10%; width: 400px; height: 400px;"></div>
+    <div class="planet" style="top: 30%; left: -5%; width: 30px; height: 30px; background: var(--accent-blue);"></div>
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-aos="fade-right">WHERE EARTH MEETS SPACE</h2>
+        <div class="two-col">
+          <div data-aos="fade-right" data-aos-delay="200">
+            <p>
+              As human cosmic ambitions took flight in the mid-20th century, we were faced with a fundamental challenge: how to break free from Earth's gravitational grip.
+            </p>
+            <p>
+              Every mission begins on Earth at laboriously chosen launch sites around the world. These sites have sent rockets, satellites, and dreams soaring into the sky. This global collection is our shared effort to reach space.
+            </p>
+            <p>
+              When the Soviets launched Sputnik into orbit in 1957, they did so from the secretive steppe of Kazakhstan in what would become the Baikonur Cosmodrome. Four years later, when Yuri Gagarin was poised to become the first human in space, he was standing on this very remote patch of Earth, a place that would soon transform from obscurity into the world's busiest portal to the stars.
+            </p>
+          </div>
+          <div data-aos="fade-left" data-aos-delay="400">
+            <p>
+              Half a world away, the United States answered with launches from Florida's eastern seaboard. Cape Canaveral, near the equator, with eastward-facing shores, and a sparse population to the east became the stage for America's space endeavor. The sandy beaches that had previously been trod only by fishermen and sunbathers now shook beneath the thunder of Saturn V rockets carrying Apollo astronauts on their journey to the Moon.
+            </p>
+            <h3>THE LITTLE HUMAN ELEMENT</h3>
+            <p>
+              Launch pads are not just engineering facilities—they're places of deep human significance. They're where astronauts bid farewell to Earth, engineers watch years of effort stretch toward the heavens, and spectators come to witness history.
+            </p>
+            <p>
+              At Baikonur, cosmonauts honor Gagarin's memory with rituals like signing off their room door and a ritual bus stop. At Kennedy Space Center, families still watch launches from Florida beaches, remembering Apollo-era traditions.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="voyager">
+    <div class="orbit" style="top: 30%; left: -5%; width: 200px; height: 200px;"></div>
+    <div class="planet" style="top: 35%; left: -2%; width: 15px; height: 15px; background: var(--accent-cyan);"></div>
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-aos="fade-right">AMBASSADORS TO THE STARS</h2>
+        <div class="two-col">
+          <div data-aos="fade-right" data-aos-delay="200">
+            <p>
+              Though the majority of missions remain in Earth's orbit or extend only to our Moon or local planets, human endeavor extends much beyond.
+            </p>
+            <p>
+              On hot late-summer afternoons in 1977, twin spaceships departed Cape Canaveral, Florida. Voyager 2 lifted off on August 20, followed by Voyager 1 on September 5—their departures spaced not by quantity but by the complex celestial waltz they were to perform. These ungainly-looking devices, both roughly the size of a subcompact automobile and weighing only 1,592 pounds, were embarking upon what would turn out to be one of mankind's most memorable journeys of discovery.
+            </p>
+          </div>
+          <div data-aos="fade-left" data-aos-delay="400">
+            <p>
+              Their primary mission was ambitious enough: conduct close-up studies of Jupiter and Saturn, their rings, and their larger moons. For Voyager 2, the mission expanded to include the first-ever flybys of Uranus and Neptune—a "Grand Tour" made possible by a rare planetary alignment that occurs just once every 176 years.
+            </p>
+          </div>
+        </div>
+        <div class="viz-wrapper" data-aos="zoom-in">
+          <div class="viz-header">
+            <h3 class="viz-title">Voyager Missions (1977–2025)</h3>
+          </div>
+          <div class="viz-content">
+            <iframe src="Visualizations\Datasets\voyager.html" class="viz-frame" id="voyager-viz"></iframe>
+          </div>
+          <div class="viz-info">
+            <p class="viz-insight">Track the epic journey of humanity's farthest-traveling spacecraft as they venture into interstellar space, now over 14 billion miles from Earth.</p>
+          </div>
+        </div>
+        <div class="two-col">
+          <div data-aos="fade-right" data-aos-delay="200">
+            <p>
+              The Voyagers concluded their planetary missions in dramatic fashion. They discovered Jupiter's gossamer rings, volcanoes on Io erupting, and the fine details in Saturn's rings. Voyager 2 revealed the bizarre sideways rotation of Uranus and Neptune's Great Dark Spot. They all transformed our understanding of the outer solar system, turning fuzzy dots in telescopes into fully realized worlds with distinct personalities.
+            </p>
+            <p>
+              Both Voyagers carry with them a golden record—a 12-inch gold-plated copper disc containing Earth sounds and images. From Bach to Chuck Berry, from the greetings in 55 languages to the smack of a kiss, the records are a message in a bottle thrown into the sea of space. There are playing directions and a map showing the planet's position, written on a slender hope that some civilization somewhere will one day capture these travelers from our planet.
+
+            </p>
+          </div>
+          <div data-aos="fade-left" data-aos-delay="400">
+            <p>
+              The Voyagers continue to communicate with Earth, but their signals, which move at the speed of light, now take over 22 hours to arrive here from billions of miles of space. Their power sources will be depleted sometime in the 2020s, shutting down their transmissions for good, but their journeys will not cease.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="content-section" id="debris">
+    <div class="orbit" style="bottom: 20%; right: -15%; width: 350px; height: 350px;"></div>
+    <div class="planet" style="bottom: 25%; right: -8%; width: 32px; height: 32px; background: var(--accent-purple);"></div>
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-aos="fade-right">THE ENVIRONMENTAL CHALLENGE</h2>
+        <p data-aos="fade-up">
+          For every successful mission that has led to additional human knowledge or ability, there are remnants behind—spent rocket stages, defunct satellites, the wreckage of explosions or collisions. These objects, traveling at speeds frequently in excess of 17,500 miles per hour, increasingly present a challenge to continuing space activity.
+        </p>
+        <p data-aos="fade-up">
+          The problem began with the first satellite launch. When the Sputnik 1 rocket stage reached orbit in 1957, it became the first man-made object in space debris. As the rate of launches during the Cold War era, the number of objects in orbit also increased. But the magnitude of the debris problem itself remained underestimated until recent decades.
+        </p>
+        <div class="viz-wrapper" data-aos="zoom-in">
+          <div class="viz-header">
+            <h3 class="viz-title">Space Debris Celestial Chart</h3>
+          </div>
+          <div class="viz-content">
+            <iframe src="Visualizations/Datasets/debris.html" class="viz-frame" id="debris-viz"></iframe>
+          </div>
+          <div class="viz-info">
+            <p class="viz-insight">Visualize the increasing challenge of orbital debris by time interval and country of origin in this interactive celestial chart.</p>
+          </div>
+        </div>
+        <p data-aos="fade-up">Space situational awareness networks today track more than 23,000 objects larger than 10 centimeters. Millions of smaller objects are believed to orbit the Earth untracked, each posing a risk of damaging operational spacecraft. This area of orbital debris is a problem shared by all spacefaring nations, as no single nation or corporation can solve it on its own.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="content-section" id="global">
+    <div class="orbit" style="top: 10%; left: -12%; width: 280px; height: 280px;"></div>
+    <div class="planet" style="top: 15%; left: -6%; width: 24px; height: 24px; background: var(--accent-cyan);"></div>
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-aos="fade-right">THE GLOBAL SPACE EFFORT</h2>
+        <p data-aos="fade-up">
+          Each satellite launch is a victory moment—the culmination of years of planning, production, and design made real by a precision-timed explosion powerful enough to break Earth's gravitational chains. These launches, mapped in time and space, reveal trends in how different countries have entered the quest for space exploration.
+        </p>
+        <div class="viz-wrapper" data-aos="zoom-in">
+          <div class="viz-header">
+            <h3 class="viz-title">Space Missions Timeline (1960-2023)</h3>
+          </div>
+          <div class="viz-content">
+            <iframe src="Visualizations/Datasets/satellite.html" class="viz-frame" id="launch-viz"></iframe>
+          </div>
+          <div class="viz-info">
+            <p class="viz-insight">Explore the history of space launches by date, company, and success rate in this interactive timeline visualization.</p>
+          </div>
+        </div>
+        <p data-aos="fade-up">Rates of success tell another essential story. Early rocketry was extremely hazardous, with unacceptable failure rates in most endeavors. Hard-won experience and choice improved over time rendered all space projects more trustworthy, though new participants tend to recreate the learning curve of their ancestors.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <section class="content-section">
+    <div class="container">
+      <div class="section-inner" data-aos="fade-up">
+        <h2 class="section-title">TO INFINITY, AND BEYOND</h2>
+        <div class="two-col">
+          <div>
+            <p>
+              Space exploration is ultimately about extending human presence—physically and intellectually—beyond our home planet. It represents our species at its most visionary, asking questions 
+              about origins and destiny that only venturing outward can answer.
+            </p>
+          </div>
+          <div>
+            <p>
+              The next launch is always just around the corner. The next discovery awaits just beyond our current reach. The next chapter in humanity's cosmic story is being written now, by 
+              thousands around the globe who share the conviction that exploring space expands who we are as a species.
+            </p>
+            <a href="#" class="cta">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+      mirror: false
+    });
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const starCount = 150;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    function handleNavbarScroll() {
+      const navbar = document.getElementById('navbar');
+      
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+    }
+    function setupMobileMenu() {
+      const menuToggle = document.getElementById('menuToggle');
+      const closeMenu = document.getElementById('closeMenu');
+      const navLinks = document.getElementById('navLinks');
+      const navItems = document.querySelectorAll('.nav-links li a');
+      
+      menuToggle.addEventListener('click', () => {
+        navLinks.classList.add('active');
+      });
+      
+      closeMenu.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+      
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+        });
+      });
+    }
+    function setupIframeLoading() {
+      const iframes = document.querySelectorAll('.viz-frame');
+      
+      iframes.forEach(iframe => {
+        const vizContent = iframe.parentElement;
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'viz-loading';
+        loadingOverlay.innerHTML = '<div class="loader"></div>';
+        vizContent.appendChild(loadingOverlay);
+        iframe.addEventListener('load', () => {
+          loadingOverlay.style.opacity = '0';
+          setTimeout(() => {
+            loadingOverlay.style.display = 'none';
+          }, 500);
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      handleNavbarScroll();
+      setupMobileMenu();
+      setupIframeLoading();
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+            return;
+          }
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
